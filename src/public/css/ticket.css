@@ -9,7 +9,7 @@
 */
 :root {
   --ticket-height: 138mm;
-  --content-width: 130mm;
+  --content-width: 148mm;
 }
 
 @page {
@@ -25,7 +25,7 @@ body {
   width: 100%;
   height: var(--ticket-height);
   margin: 16px auto;
-  padding: 6mm 8mm 0;
+  padding: 5mm 8mm 0;
   background: #fff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
@@ -39,66 +39,66 @@ body {
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.35;
 }
 
 .ticket-title {
-  font-size: 19px;
-  margin: 0 0 4mm;
+  font-size: 21px;
+  margin: 0 0 3mm;
 }
 
 .queue-box {
   border: 2.5px solid #000;
-  padding: 3mm 3mm;
-  margin-bottom: 3mm;
+  padding: 2.5mm 3mm;
+  margin-bottom: 2mm;
 }
 
 .queue-label-top {
-  font-size: 13px;
-  margin-bottom: 1.5mm;
+  font-size: 14px;
+  margin-bottom: 1mm;
 }
 
 .queue-no {
-  font-size: 46px;
+  font-size: 50px;
   font-weight: bold;
   line-height: 1.1;
 }
 
 .barcode {
-  height: 13mm;
+  height: 12mm;
   width: auto;
   max-width: 100%;
-  margin: 2mm auto 1mm;
+  margin: 1.5mm auto 1mm;
   display: block;
 }
 
 .barcode-text {
   letter-spacing: 1.5px;
-  margin-bottom: 3mm;
-  font-size: 12px;
+  margin-bottom: 2mm;
+  font-size: 13px;
 }
 
 .patient-name {
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 1mm;
 }
 
 .hospital-name {
   font-weight: bold;
-  font-size: 15px;
-  margin-bottom: 3mm;
+  font-size: 17px;
+  margin-bottom: 2mm;
 }
 
 .line {
   text-align: left;
-  margin-bottom: 2mm;
+  margin-bottom: 1.5mm;
 }
 
 .steps {
   text-align: left;
-  margin: 3mm 0;
+  margin: 2mm 0;
 }
 
 .steps-title {
