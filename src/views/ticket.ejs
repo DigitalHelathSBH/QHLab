@@ -30,6 +30,10 @@
         <div class="barcode-text"><%= ticket.barcodeValue %></div>
       <% } %>
 
+      <% if (ticket.patientName) { %>
+        <div class="patient-name"><%= ticket.patientName %></div>
+      <% } %>
+
       <div class="hospital-name"><%= ticket.hospitalName %></div>
 
       <% if (ticket.hn) { %>

@@ -46,7 +46,9 @@ async function findTodayQueueByHN(hn) {
       // cast ทั้งสองฝั่งเป็น date เพราะ VISITDATE อาจเป็น datetime ที่มีเวลาติดมาด้วย
       // (ถ้า cast แค่ getdate() ฝั่งเดียว แถวที่ VISITDATE มีเวลาไม่ใช่เที่ยงคืนจะไม่ match แล้วดูเหมือน "หาไม่เจอ")
       // LEFT JOIN ตาราง master เพื่อแปลงรหัสคลินิก/สิทธิ เป็นชื่อเต็มสำหรับพิมพ์บนบัตร
-      `select q.*, c.ClinicName as clinicDisplayName, r.RightName as rightDisplayName
+      // dbo.GetFullNameWithTitle(HN) คืนชื่อ-นามสกุลผู้ป่วยพร้อมคำนำหน้า
+      `select q.*, c.ClinicName as clinicDisplayName, r.RightName as rightDisplayName,
+              dbo.GetFullNameWithTitle(q.HN) as patientFullName
        from ssbdatabase.dbo.QuickWin_PharOPD q
        left join [SSBDatabase].[dbo].[ClinicName] c on c.CODE = q.clinic
        left join [SSBDatabase].[dbo].[RightCodeView] r on r.RightCode = q.rightCode

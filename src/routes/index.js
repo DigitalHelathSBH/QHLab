@@ -45,6 +45,7 @@ async function buildTicket(row) {
     queueLabel: pick(row, "queueLabel"),
     barcodeValue,
     barcodeDataUrl,
+    patientName: pick(row, "patientName"),
     hn: pick(row, "hn"),
     clinicCode: pick(row, "clinicCode"),
     clinicName: pick(row, "clinicName"),

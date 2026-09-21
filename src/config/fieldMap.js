@@ -31,6 +31,9 @@ module.exports = {
   // เลขที่ใช้พิมพ์เป็นบาร์โค้ด (ใต้แท่งบาร์โค้ด)
   barcodeValue: "phxBarcode",
 
+  // ชื่อ-นามสกุลผู้ป่วยพร้อมคำนำหน้า จาก dbo.GetFullNameWithTitle(HN) (ดู src/db.js)
+  patientName: "patientFullName",
+
   // คลินิก - รหัสดิบจากตาราง + ชื่อเต็มจากการ join ตาราง ClinicName (ดูหมายเหตุด้านบน)
   clinicCode: "clinic",
   clinicName: "clinicDisplayName",
