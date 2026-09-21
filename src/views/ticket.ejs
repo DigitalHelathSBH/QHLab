@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>บัตรคิว ห้องจ่ายยา OPD</title>
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="/css/ticket.css" />
+</head>
+<body>
+  <div class="toolbar no-print">
+    <a href="/">&larr; ค้นหาใหม่</a>
+    <button onclick="window.print()">ปริ้นบัตรคิว</button>
+  </div>
+
+  <% tickets.forEach(function (ticket) { %>
+  <section class="ticket">
+    <div class="content">
+      <h1 class="ticket-title">ห้องจ่ายยา OPD</h1>
+
+      <div class="queue-box">
+        <% if (ticket.queueLabel) { %>
+          <div class="queue-label-top"><%= ticket.queueLabel %></div>
+        <% } %>
+        <div class="queue-no"><%= ticket.queueNo %></div>
+      </div>
+
+      <% if (ticket.barcodeDataUrl) { %>
+        <img class="barcode" src="<%= ticket.barcodeDataUrl %>" alt="barcode" />
+        <div class="barcode-text"><%= ticket.barcodeValue %></div>
+      <% } %>
+
+      <div class="hospital-name"><%= ticket.hospitalName %></div>
+
+      <% if (ticket.hn) { %>
+        <div class="line">HN <%= ticket.hn %></div>
+      <% } %>
+
+      <% if (ticket.clinicName || ticket.clinicCode) { %>
+        <div class="line">
+          คลินิก: <% if (ticket.clinicCode) { %>(<%= ticket.clinicCode %>) <% } %><%= ticket.clinicName || "" %>
+        </div>
+      <% } %>
+
+      <% if (ticket.rightName || ticket.rightCode) { %>
+        <div class="line">
+          สิทธิ: <% if (ticket.rightCode) { %>(<%= ticket.rightCode %>) <% } %><%= ticket.rightName || "" %>
+        </div>
+      <% } %>
+
+      <div class="steps">
+        <div class="steps-title">ขั้นตอนการเข้ารับบริการ</div>
+        <ol>
+          <li>ผู้ป่วยติดต่อห้องการเงิน</li>
+          <li>ผู้ป่วยรอเรียกคิวรับยาห้องยา</li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <div class="note-title">หมายเหตุ</div>
+        <div>เฉพาะผู้ป่วยสิทธิ์ชำระเงินให้รอห้องการเงินเรียกเพื่อชำระเงิน</div>
+      </div>
+    </div>
+
+    <div class="cut-line"></div>
+  </section>
+  <% }); %>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "qhlab-print-queue",
+  "version": "1.0.0",
+  "description": "หน้าเว็บค้นหาและปริ้นบัตรคิวห้องจ่ายยา OPD จาก HN",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "bwip-js": "^4.3.2",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "mssql": "^11.0.1"
+  }
+}

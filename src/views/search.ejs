@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ปริ้นบัตรคิว - ห้องจ่ายยา OPD</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <main class="search-box">
+    <h1>ปริ้นบัตรคิว ห้องจ่ายยา OPD</h1>
+    <p class="today">ค้นหาคิวของวันนี้: <strong><%= todayThai %></strong></p>
+
+    <% if (error) { %>
+      <p class="error"><%= error %></p>
+    <% } %>
+
+    <form action="/print" method="get" class="hn-form">
+      <label for="hn">เลข HN</label>
+      <input
+        type="text"
+        id="hn"
+        name="hn"
+        value="<%= hn %>"
+        placeholder="เช่น 1234567"
+        autofocus
+        required
+        inputmode="numeric"
+      />
+      <button type="submit">ค้นหา / ปริ้นบัตรคิว</button>
+    </form>
+
+    <p class="hint">ระบบจะค้นหาคิวของ HN นี้เฉพาะวันที่ปัจจุบันเท่านั้น</p>
+  </main>
+</body>
+</html>
