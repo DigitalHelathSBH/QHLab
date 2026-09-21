@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ปริ้นบัตรคิว - ห้องจ่ายยา OPD</title>
-<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="<%= basePath %>/css/style.css" />
 </head>
 <body>
   <main class="search-box">
@@ -15,7 +15,7 @@
       <p class="error"><%= error %></p>
     <% } %>
 
-    <form action="/print" method="get" class="hn-form">
+    <form action="<%= basePath %>/print" method="get" class="hn-form">
       <label for="hn">เลข HN</label>
       <input
         type="text"
