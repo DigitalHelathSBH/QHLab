@@ -73,6 +73,40 @@ body {
   font-size: 13px;
 }
 
+.clinic-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.clinic-choice-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 2px solid #1a73e8;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #1a73e8;
+  font-weight: bold;
+}
+
+.clinic-choice-btn:hover {
+  background: #1a73e8;
+  color: #fff;
+}
+
+.clinic-choice-queue {
+  font-size: 20px;
+}
+
+.clinic-choice-name {
+  font-size: 14px;
+  text-align: right;
+}
+
 .toolbar {
   max-width: 400px;
   margin: 20px auto;

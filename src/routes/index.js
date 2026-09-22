@@ -3,6 +3,7 @@ const bwipjs = require("bwip-js");
 
 const { findTodayQueueByHN, checkConnection } = require("../db");
 const fieldMap = require("../config/fieldMap");
+const { getQueuePrefixInfo } = require("../config/queuePrefixInfo");
 
 const router = express.Router();
 
@@ -40,6 +41,8 @@ async function buildTicket(row) {
     barcodeDataUrl = null;
   }
 
+  const { steps, note } = getQueuePrefixInfo(queueNo);
+
   return {
     queueNo,
     queueLabel: pick(row, "queueLabel"),
@@ -52,7 +55,26 @@ async function buildTicket(row) {
     rightCode: pick(row, "rightCode"),
     rightName: pick(row, "rightName"),
     hospitalName: process.env.HOSPITAL_NAME || "โรงพยาบาล",
+    steps,
+    note,
   };
+}
+
+/** รวมแถวที่มี clinic ซ้ำกันให้เหลือตัวแทนคลินิกละ 1 แถว สำหรับหน้าเลือกคลินิก */
+function distinctClinics(rows) {
+  const seen = new Map();
+  for (const row of rows) {
+    const clinicCode = pick(row, "clinicCode");
+    const key = clinicCode === null ? "" : String(clinicCode);
+    if (!seen.has(key)) {
+      seen.set(key, {
+        clinicCode,
+        clinicName: pick(row, "clinicName"),
+        queueNo: pick(row, "queueNo"),
+      });
+    }
+  }
+  return [...seen.values()];
 }
 
 router.get("/", (req, res) => {
@@ -75,6 +97,7 @@ router.get("/db-check", async (req, res) => {
 
 router.get("/print", async (req, res) => {
   const hn = (req.query.hn || "").trim();
+  const clinicParam = (req.query.clinic || "").trim();
   if (!hn) {
     return res.render("search", {
       error: "กรุณากรอกเลข HN",
@@ -108,7 +131,26 @@ router.get("/print", async (req, res) => {
       });
     }
 
-    const tickets = await Promise.all(rows.map(buildTicket));
+    // ถ้า HN นี้มีคิวมากกว่า 1 คลินิกในวันเดียวกัน บาร์โค้ดของแต่ละคลินิกไม่เหมือนกัน
+    // ให้เลือกคลินิกก่อนปริ้น (ยกเว้นกดเลือกมาแล้วจาก ?clinic=...)
+    const clinics = distinctClinics(rows);
+    if (!clinicParam && clinics.length > 1) {
+      return res.render("choose-clinic", { hn, clinics, todayThai: todayThaiDate() });
+    }
+
+    const filteredRows = clinicParam
+      ? rows.filter((row) => String(pick(row, "clinicCode") ?? "") === clinicParam)
+      : rows;
+
+    if (!filteredRows.length) {
+      return res.render("search", {
+        error: `ไม่พบคิวของคลินิกที่เลือกสำหรับ HN ${hn} สำหรับวันนี้ กรุณาค้นหาใหม่`,
+        hn,
+        todayThai: todayThaiDate(),
+      });
+    }
+
+    const tickets = await Promise.all(filteredRows.map(buildTicket));
     res.render("ticket", { tickets, todayThai: todayThaiDate() });
   } catch (err) {
     console.error(err);

@@ -52,18 +52,23 @@
         </div>
       <% } %>
 
-      <div class="steps">
-        <div class="steps-title">ขั้นตอนการเข้ารับบริการ</div>
-        <ol>
-          <li>ผู้ป่วยติดต่อห้องการเงิน</li>
-          <li>ผู้ป่วยรอเรียกคิวรับยาห้องยา</li>
-        </ol>
-      </div>
+      <% if (ticket.steps && ticket.steps.length) { %>
+        <div class="steps">
+          <div class="steps-title">ขั้นตอนการเข้ารับบริการ</div>
+          <ol>
+            <% ticket.steps.forEach(function (step) { %>
+              <li><%= step %></li>
+            <% }); %>
+          </ol>
+        </div>
+      <% } %>
 
-      <div class="note">
-        <div class="note-title">หมายเหตุ</div>
-        <div>เฉพาะผู้ป่วยสิทธิ์ชำระเงินให้รอห้องการเงินเรียกเพื่อชำระเงิน</div>
-      </div>
+      <% if (ticket.note) { %>
+        <div class="note">
+          <div class="note-title">หมายเหตุ</div>
+          <div><%= ticket.note %></div>
+        </div>
+      <% } %>
     </div>
 
     <div class="cut-line"></div>
