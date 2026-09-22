@@ -60,21 +60,22 @@ async function buildTicket(row) {
   };
 }
 
-/** รวมแถวที่มี clinic ซ้ำกันให้เหลือตัวแทนคลินิกละ 1 แถว สำหรับหน้าเลือกคลินิก */
-function distinctClinics(rows) {
-  const seen = new Map();
-  for (const row of rows) {
-    const clinicCode = pick(row, "clinicCode");
-    const key = clinicCode === null ? "" : String(clinicCode);
-    if (!seen.has(key)) {
-      seen.set(key, {
-        clinicCode,
-        clinicName: pick(row, "clinicName"),
-        queueNo: pick(row, "queueNo"),
-      });
-    }
-  }
-  return [...seen.values()];
+/**
+ * สร้างคีย์ระบุแถวแบบไม่ซ้ำ จากคลินิก+เลขคิว (แถวเดียวกันจริงๆ จะได้คีย์เดียวกัน)
+ * ใช้แทนการอ้างคอลัมน์ id ตรงๆ เพราะ fieldMap.js ยังไม่ได้ map คอลัมน์ id ไว้
+ */
+function rowKey(row) {
+  return `${pick(row, "clinicCode") ?? ""}::${pick(row, "queueNo") ?? ""}`;
+}
+
+/** สร้างตัวเลือกสำหรับหน้าเลือกคิว/คลินิก 1 ตัวเลือกต่อ 1 แถว (ไม่ใช่ต่อคลินิก) */
+function buildRowOptions(rows) {
+  return rows.map((row) => ({
+    key: rowKey(row),
+    clinicCode: pick(row, "clinicCode"),
+    clinicName: pick(row, "clinicName"),
+    queueNo: pick(row, "queueNo"),
+  }));
 }
 
 router.get("/", (req, res) => {
@@ -97,7 +98,7 @@ router.get("/db-check", async (req, res) => {
 
 router.get("/print", async (req, res) => {
   const hn = (req.query.hn || "").trim();
-  const clinicParam = (req.query.clinic || "").trim();
+  const selectedKey = (req.query.sel || "").trim();
   if (!hn) {
     return res.render("search", {
       error: "กรุณากรอกเลข HN",
@@ -131,20 +132,21 @@ router.get("/print", async (req, res) => {
       });
     }
 
-    // ถ้า HN นี้มีคิวมากกว่า 1 คลินิกในวันเดียวกัน บาร์โค้ดของแต่ละคลินิกไม่เหมือนกัน
-    // ให้เลือกคลินิกก่อนปริ้น (ยกเว้นกดเลือกมาแล้วจาก ?clinic=...)
-    const clinics = distinctClinics(rows);
-    if (!clinicParam && clinics.length > 1) {
-      return res.render("choose-clinic", { hn, clinics, todayThai: todayThaiDate() });
+    // ถ้า HN นี้มีมากกว่า 1 คิววันนี้ (ไม่ว่าจะคลินิกเดียวกันหรือต่างคลินิก) บาร์โค้ด/รายละเอียด
+    // ของแต่ละคิวไม่เหมือนกัน จึงต้องให้เลือกก่อนว่าจะปริ้นใบไหน (ยกเว้นกดเลือกมาแล้วจาก ?sel=...)
+    if (!selectedKey && rows.length > 1) {
+      return res.render("choose-clinic", {
+        hn,
+        clinics: buildRowOptions(rows),
+        todayThai: todayThaiDate(),
+      });
     }
 
-    const filteredRows = clinicParam
-      ? rows.filter((row) => String(pick(row, "clinicCode") ?? "") === clinicParam)
-      : rows;
+    const filteredRows = selectedKey ? rows.filter((row) => rowKey(row) === selectedKey) : rows;
 
     if (!filteredRows.length) {
       return res.render("search", {
-        error: `ไม่พบคิวของคลินิกที่เลือกสำหรับ HN ${hn} สำหรับวันนี้ กรุณาค้นหาใหม่`,
+        error: `ไม่พบคิวที่เลือกสำหรับ HN ${hn} สำหรับวันนี้ กรุณาค้นหาใหม่`,
         hn,
         todayThai: todayThaiDate(),
       });

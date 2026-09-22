@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>เลือกคลินิก - ปริ้นบัตรคิว</title>
+<title>เลือกคิวที่จะปริ้น</title>
 <link rel="stylesheet" href="<%= basePath %>/css/style.css" />
 </head>
 <body>
   <main class="search-box">
-    <h1>เลือกคลินิก</h1>
+    <h1>เลือกคิวที่จะปริ้น</h1>
     <p class="today">
-      HN <%= hn %> พบคิววันนี้มากกว่า 1 คลินิก กรุณาเลือกคลินิกที่จะปริ้นบัตรคิว
+      HN <%= hn %> พบคิววันนี้มากกว่า 1 ใบ กรุณาเลือกคิวที่จะปริ้นบัตร
     </p>
 
     <div class="clinic-choices">
       <% clinics.forEach(function (c) { %>
         <a
           class="clinic-choice-btn"
-          href="<%= basePath %>/print?hn=<%= encodeURIComponent(hn) %>&clinic=<%= encodeURIComponent(c.clinicCode ?? '') %>"
+          href="<%= basePath %>/print?hn=<%= encodeURIComponent(hn) %>&sel=<%= encodeURIComponent(c.key) %>"
         >
           <span class="clinic-choice-queue"><%= c.queueNo %></span>
           <span class="clinic-choice-name">
