@@ -41,7 +41,7 @@ async function buildTicket(row) {
     barcodeDataUrl = null;
   }
 
-  const { steps, note } = getQueuePrefixInfo(queueNo);
+  const { steps, note, serviceWindow } = getQueuePrefixInfo(queueNo);
 
   return {
     queueNo,
@@ -57,6 +57,7 @@ async function buildTicket(row) {
     hospitalName: process.env.HOSPITAL_NAME || "โรงพยาบาล",
     steps,
     note,
+    serviceWindow,
   };
 }
 

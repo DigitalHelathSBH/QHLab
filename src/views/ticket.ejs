@@ -25,16 +25,27 @@
         <div class="queue-no"><%= ticket.queueNo %></div>
       </div>
 
-      <% if (ticket.barcodeDataUrl) { %>
-        <img class="barcode" src="<%= ticket.barcodeDataUrl %>" alt="barcode" />
-        <div class="barcode-text"><%= ticket.barcodeValue %></div>
-      <% } %>
+      <div class="barcode-row">
+        <div class="barcode-block">
+          <% if (ticket.barcodeDataUrl) { %>
+            <img class="barcode" src="<%= ticket.barcodeDataUrl %>" alt="barcode" />
+            <div class="barcode-text"><%= ticket.barcodeValue %></div>
+          <% } %>
 
-      <% if (ticket.patientName) { %>
-        <div class="patient-name"><%= ticket.patientName %></div>
-      <% } %>
+          <% if (ticket.patientName) { %>
+            <div class="patient-name"><%= ticket.patientName %></div>
+          <% } %>
 
-      <div class="hospital-name"><%= ticket.hospitalName %></div>
+          <div class="hospital-name"><%= ticket.hospitalName %></div>
+        </div>
+
+        <% if (ticket.serviceWindow) { %>
+          <div class="service-window-box">
+            <div class="service-window-label">ช่องบริการ</div>
+            <div class="service-window-no"><%= ticket.serviceWindow %></div>
+          </div>
+        <% } %>
+      </div>
 
       <% if (ticket.hn) { %>
         <div class="line">HN <%= ticket.hn %></div>
